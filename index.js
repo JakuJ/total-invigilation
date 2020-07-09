@@ -1,7 +1,9 @@
 Notification.requestPermission()
 
 function notify(message, good = false) {
-  if (Notification.permission === 'granted') {
+  const notif = !document.getElementById('noNotif').checked
+
+  if (Notification.permission === 'granted' && notif) {
     new Notification(message)
   }
 
