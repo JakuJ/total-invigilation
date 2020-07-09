@@ -79,6 +79,7 @@ function registerActivity() {
 
 window.onmousemove = registerActivity
 window.onkeydown = registerActivity
+window.onscroll = registerActivity
 
 // Use the Visibility API
 
