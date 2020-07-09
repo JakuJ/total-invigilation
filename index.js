@@ -1,12 +1,14 @@
 Notification.requestPermission()
 
-function notify(message) {
+function notify(message, good = false) {
   if (Notification.permission === 'granted') {
     new Notification(message)
   }
 
+  let tableClass = good ? 'table-success' : 'table-danger'
+
   const events = document.getElementById('events')
-  events.innerHTML += `<tr><td>${new Date().toLocaleTimeString()}</td><td>${message}</td></tr>`
+  events.innerHTML += `<tr class="${tableClass}"><td>${new Date().toLocaleTimeString()}</td><td>${message}</td></tr>`
 }
 
 // Track mouse position inside the page
@@ -16,7 +18,7 @@ var mouseLeaving = 0
 function updateMouse() {
   document.getElementById(
     'mouse',
-  ).innerText = `Times your mouse has left the body of the page: ${mouseLeaving}`
+  ).innerHTML = `Times your mouse has left the body of the page: <b>${mouseLeaving}</b>`
 }
 
 updateMouse()
@@ -42,8 +44,10 @@ var focusAlerted = false
 function updateTime() {
   document.getElementById(
     'idle',
-  ).innerText = `Current inactivity: ${idleTime} seconds`
+  ).innerHTML = `Current inactivity: <b>${idleTime} seconds</b>`
 }
+
+updateTime()
 
 let clock = new Worker('./clock.js')
 clock.postMessage('start')
@@ -58,6 +62,9 @@ clock.onmessage = () => {
   }
 
   if (document.hasFocus()) {
+    if (focusAlerted) {
+      notify('Your window has regained focus', true)
+    }
     focusAlerted = false
   } else if (!focusAlerted) {
     focusAlerted = true
@@ -94,7 +101,7 @@ function handleVisibilityChange() {
   if (document[hidden]) {
     notify("You've hidden the page")
   } else {
-    notify("You're back on the page")
+    notify("You're back on the page", true)
   }
 }
 
