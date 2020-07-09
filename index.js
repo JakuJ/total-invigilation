@@ -74,12 +74,14 @@ clock.onmessage = () => {
 
 function registerActivity() {
   idleTime = 0
+  idleAlerted = false
   updateTime()
 }
 
 window.onmousemove = registerActivity
 window.onkeydown = registerActivity
 window.onscroll = registerActivity
+window.onmousedown = registerActivity
 
 // Use the Visibility API
 
